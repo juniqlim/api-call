@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public interface HttpLogging {
-    void log(HttpMessage httpMessage);
+    void infoLog(HttpMessage httpMessage);
     void errorLog(HttpMessage httpMessage);
 
     class SystemOutPrintHttpLogging implements HttpLogging {
@@ -14,7 +14,7 @@ public interface HttpLogging {
         private final ObjectMapper objectMapper = new ObjectMapper();
 
         @Override
-        public void log(HttpMessage httpMessage) {
+        public void infoLog(HttpMessage httpMessage) {
             log.info("status:{},method:{},url:{},header:{},req:{},res:{}", httpMessage.response().httpStatus(),
                 httpMessage.httpMethod().name(), httpMessage.url(), httpMessage.header().toString(),
                 stringOf(httpMessage.request()), httpMessage.response().body());

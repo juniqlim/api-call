@@ -1,7 +1,6 @@
 package im.juniq.apicall.http;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.junit.jupiter.api.Assertions.*;
 
 import im.juniq.apicall.http.HttpLogging.SystemOutPrintHttpLogging;
 import java.util.HashMap;
@@ -12,13 +11,13 @@ import org.springframework.http.HttpStatus;
 
 class HttpLoggingTest {
     @Test
-    void log() {
+    void infoLog() {
         HttpLogging logging = new SystemOutPrintHttpLogging();
         Request request = Request.of("male", "juniq", "juniq@juniq.com", "active");
         HttpResponse response = HttpResponse.of(HttpStatus.OK, "{\"code\": \"success\"}");
         HttpMessage httpMessage = HttpMessage.of(HttpMethod.POST, "https://gorest.co.in/public/v2/users", header(), request, response);
 
-        assertThatCode(() -> logging.log(httpMessage)).doesNotThrowAnyException();
+        assertThatCode(() -> logging.infoLog(httpMessage)).doesNotThrowAnyException();
     }
 
     @Test

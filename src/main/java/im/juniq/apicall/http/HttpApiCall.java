@@ -51,10 +51,10 @@ public class HttpApiCall {
     public String callApi(HttpMethod httpMethod, String url, Map<String, String> header, Object request) {
         HttpResponse response = sendHttpRequest(httpMethod, url, header, request);
         if (response.isError()) {
-            httpLogging.errorLog(HttpMessage.of(httpMethod, url, header, request, response));
+            httpLogging.errorLog(HttpApiCallResult.of(httpMethod, url, header, request, response));
             throw new HttpApiCallException(response, "Http request exception");
         }
-        httpLogging.infoLog(HttpMessage.of(httpMethod, url, header, request, response));
+        httpLogging.infoLog(HttpApiCallResult.of(httpMethod, url, header, request, response));
         return response.body();
     }
 

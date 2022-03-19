@@ -3,14 +3,14 @@ package im.juniq.apicall.http;
 import java.util.Map;
 import org.springframework.http.HttpMethod;
 
-public class HttpMessage {
+public class HttpApiCallResult {
     private final HttpMethod httpMethod;
     private final String url;
     private final Map<String, String> header;
     private final Object request;
     private final HttpResponse response;
 
-    private HttpMessage(HttpMethod httpMethod, String url, Map<String, String> header, Object request,
+    private HttpApiCallResult(HttpMethod httpMethod, String url, Map<String, String> header, Object request,
         HttpResponse response) {
         this.httpMethod = httpMethod;
         this.url = url;
@@ -19,9 +19,9 @@ public class HttpMessage {
         this.response = response;
     }
 
-    public static HttpMessage of(HttpMethod httpMethod, String url, Map<String, String> header, Object request,
+    public static HttpApiCallResult of(HttpMethod httpMethod, String url, Map<String, String> header, Object request,
         HttpResponse response) {
-        return new HttpMessage(httpMethod, url, header, request, response);
+        return new HttpApiCallResult(httpMethod, url, header, request, response);
     }
 
     public HttpMethod httpMethod() {

@@ -2,30 +2,30 @@ package im.juniq.apicall.http.logging;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import im.juniq.apicall.http.HttpMessage;
+import im.juniq.apicall.http.HttpApiCallResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public interface HttpLogging {
-    void infoLog(HttpMessage httpMessage);
-    void errorLog(HttpMessage httpMessage);
+    void infoLog(HttpApiCallResult httpApiCallResult);
+    void errorLog(HttpApiCallResult httpApiCallResult);
 
     class SystemOutPrintHttpLogging implements HttpLogging {
         private final Logger log = LoggerFactory.getLogger(this.getClass());
         private final ObjectMapper objectMapper = new ObjectMapper();
 
         @Override
-        public void infoLog(HttpMessage httpMessage) {
-            log.info("status:{},method:{},url:{},header:{},req:{},res:{}", httpMessage.response().httpStatus(),
-                httpMessage.httpMethod().name(), httpMessage.url(), httpMessage.header().toString(),
-                stringOf(httpMessage.request()), httpMessage.response().body());
+        public void infoLog(HttpApiCallResult httpApiCallResult) {
+            log.info("status:{},method:{},url:{},header:{},req:{},res:{}", httpApiCallResult.response().httpStatus(),
+                httpApiCallResult.httpMethod().name(), httpApiCallResult.url(), httpApiCallResult.header().toString(),
+                stringOf(httpApiCallResult.request()), httpApiCallResult.response().body());
         }
 
         @Override
-        public void errorLog(HttpMessage httpMessage) {
-            log.error("status:{},method:{},url:{},header:{},req:{},res:{}", httpMessage.response().httpStatus(),
-                httpMessage.httpMethod().name(), httpMessage.url(), httpMessage.header().toString(),
-                stringOf(httpMessage.request()), httpMessage.response().body());
+        public void errorLog(HttpApiCallResult httpApiCallResult) {
+            log.error("status:{},method:{},url:{},header:{},req:{},res:{}", httpApiCallResult.response().httpStatus(),
+                httpApiCallResult.httpMethod().name(), httpApiCallResult.url(), httpApiCallResult.header().toString(),
+                stringOf(httpApiCallResult.request()), httpApiCallResult.response().body());
         }
 
         private String stringOf(Object request) {

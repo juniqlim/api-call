@@ -16,9 +16,9 @@ class HttpLoggingTest {
         HttpLogging logging = new SystemOutPrintHttpLogging();
         Request request = Request.of("male", "juniq", "juniq@juniq.com", "active");
         HttpResponse response = HttpResponse.of(HttpStatus.OK, "{\"code\": \"success\"}");
-        HttpMessage httpMessage = HttpMessage.of(HttpMethod.POST, "https://gorest.co.in/public/v2/users", header(), request, response);
+        HttpApiCallResult httpApiCallResult = HttpApiCallResult.of(HttpMethod.POST, "https://gorest.co.in/public/v2/users", header(), request, response);
 
-        assertThatCode(() -> logging.infoLog(httpMessage)).doesNotThrowAnyException();
+        assertThatCode(() -> logging.infoLog(httpApiCallResult)).doesNotThrowAnyException();
     }
 
     @Test
@@ -26,9 +26,9 @@ class HttpLoggingTest {
         HttpLogging logging = new SystemOutPrintHttpLogging();
         Request request = Request.of("male", "juniq", "juniq@juniq.com", "active");
         HttpResponse response = HttpResponse.of(HttpStatus.OK, "{\"code\": \"success\"}");
-        HttpMessage httpMessage = HttpMessage.of(HttpMethod.POST, "https://gorest.co.in/public/v2/users", header(), request, response);
+        HttpApiCallResult httpApiCallResult = HttpApiCallResult.of(HttpMethod.POST, "https://gorest.co.in/public/v2/users", header(), request, response);
 
-        assertThatCode(() -> logging.errorLog(httpMessage)).doesNotThrowAnyException();
+        assertThatCode(() -> logging.errorLog(httpApiCallResult)).doesNotThrowAnyException();
     }
 
     private Map<String, String> header() {

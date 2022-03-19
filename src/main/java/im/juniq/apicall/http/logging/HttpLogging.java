@@ -1,7 +1,8 @@
-package im.juniq.apicall.http;
+package im.juniq.apicall.http.logging;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import im.juniq.apicall.http.HttpMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

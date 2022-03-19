@@ -2,6 +2,8 @@ package im.juniq.apicall.http;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import im.juniq.apicall.http.logging.HttpLogging;
+import im.juniq.apicall.http.logging.HttpLogging.SystemOutPrintHttpLogging;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
@@ -17,14 +19,20 @@ import org.springframework.web.client.RestTemplate;
 public class HttpApiCall {
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
+    private final HttpLogging httpLogging;
 
-    private HttpApiCall(RestTemplate restTemplate, ObjectMapper objectMapper) {
+    private HttpApiCall(RestTemplate restTemplate, ObjectMapper objectMapper, HttpLogging httpLogging) {
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
+        this.httpLogging = httpLogging;
     }
 
     public static HttpApiCall of(RestTemplate restTemplate, ObjectMapper objectMapper) {
-        return new HttpApiCall(restTemplate, objectMapper);
+        return new HttpApiCall(restTemplate, objectMapper, new SystemOutPrintHttpLogging());
+    }
+
+    public static HttpApiCall of(RestTemplate restTemplate, ObjectMapper objectMapper, HttpLogging httpLogging) {
+        return new HttpApiCall(restTemplate, objectMapper, httpLogging);
     }
 
     public String callApi(String url) {
@@ -43,23 +51,11 @@ public class HttpApiCall {
     public String callApi(HttpMethod httpMethod, String url, Map<String, String> header, Object request) {
         HttpResponse response = sendHttpRequest(httpMethod, url, header, request);
         if (response.isError()) {
-            errorLog(httpMethod, url, header, request, response);
+            httpLogging.errorLog(HttpMessage.of(httpMethod, url, header, request, response));
             throw new HttpApiCallException(response, "Http request exception");
         }
-        infoLog(httpMethod, url, header, request, response);
+        httpLogging.infoLog(HttpMessage.of(httpMethod, url, header, request, response));
         return response.body();
-    }
-
-    private void infoLog(HttpMethod httpMethod, String url, Map<String, String> header, Object request,
-        HttpResponse response) {
-        log.info("status:{},url:{},method:{},header:{},req:{},res:{}", response.httpStatus(), url, httpMethod.name(), header.toString(), stringOf(
-            request), response.body());
-    }
-
-    private void errorLog(HttpMethod httpMethod, String url, Map<String, String> header, Object request,
-        HttpResponse response) {
-        log.error("status:{},url:{},method:{},header:{},req:{},res:{}", response.httpStatus(), url, httpMethod.name(), header.toString(), stringOf(
-            request), response.body());
     }
 
     private HttpResponse sendHttpRequest(HttpMethod httpMethod, String url, Map<String, String> header,

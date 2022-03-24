@@ -27,6 +27,20 @@ class HttpApiCallTest {
         delete(response.getId());
     }
 
+    @Test
+    void 등록_조회_삭제_객체로_응답() {
+        HttpApiCall httpApiCall = HttpApiCall.of(new RestTemplate(), new ObjectMapper());
+        Request request = Request.of("male", "juniq", "juniq@juniq.com", "active");
+
+        Response response = httpApiCall.callApi(HttpMethod.POST, "https://gorest.co.in/public/v2/users", header(),
+            request, Response.class);
+
+        assertThat(response.getId()).isGreaterThan(0);
+
+        Response findedUser = get().get(0);
+        delete(findedUser.getId());
+    }
+
     void delete(int id) {
         HttpApiCall httpApiCall = HttpApiCall.of(new RestTemplate(), new ObjectMapper());
         httpApiCall.callApi(HttpMethod.DELETE, "https://gorest.co.in/public/v2/users/" + id, header(), null);

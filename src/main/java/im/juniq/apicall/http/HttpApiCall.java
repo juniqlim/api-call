@@ -1,6 +1,5 @@
 package im.juniq.apicall.http;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import im.juniq.apicall.http.logging.HttpLogging;
 import im.juniq.apicall.http.logging.HttpLogging.SystemOutPrintHttpLogging;
@@ -39,23 +38,36 @@ public class HttpApiCall {
         return callApi(url, new HashMap<>());
     }
 
+    public <S>S callApi(String url, Class<S> clazz) {
+        return parseResponseBody(callApi(url, new HashMap<>()), clazz);
+    }
+
     public String callApi(String url, Map<String, String> headers) {
         return callApi(HttpMethod.GET, url, headers, null);
     }
 
-    public <T>T callApi(String url, Map<String, String> headers, Class<T> clazz) {
-        String responseBody = callApi(HttpMethod.GET, url, headers, null);
-        return ResponseBodyParser.of(objectMapper).parse(responseBody, clazz);
+    public <S>S callApi(String url, Map<String, String> headers, Class<S> clazz) {
+        return parseResponseBody(callApi(HttpMethod.GET, url, headers, null), clazz);
     }
 
-    public String callApi(HttpMethod httpMethod, String url, Map<String, String> header, Object request) {
+    public <Q> String callApi(HttpMethod httpMethod, String url, Map<String, String> header, Q request) {
         HttpResponse response = sendHttpRequest(httpMethod, url, header, request);
-        if (response.isError()) {
-            httpLogging.errorLog(HttpApiCallResult.of(httpMethod, url, header, request, response));
-            throw new HttpApiCallException(response, "Http request exception");
-        }
-        httpLogging.infoLog(HttpApiCallResult.of(httpMethod, url, header, request, response));
+        log(HttpApiCallResult.of(httpMethod, url, header, request, response));
         return response.body();
+    }
+
+    public <Q, S>S callApi(HttpMethod httpMethod, String url, Map<String, String> header, Q request, Class<S> clazz) {
+        HttpResponse response = sendHttpRequest(httpMethod, url, header, request);
+        log(HttpApiCallResult.of(httpMethod, url, header, request, response));
+        return parseResponseBody(response.body(), clazz);
+    }
+
+    private void log(HttpApiCallResult httpMethod) {
+        if (httpMethod.response().isError()) {
+            httpLogging.errorLog(httpMethod);
+            throw new HttpApiCallException(httpMethod.response(), "Http request exception");
+        }
+        httpLogging.infoLog(httpMethod);
     }
 
     private HttpResponse sendHttpRequest(HttpMethod httpMethod, String url, Map<String, String> header,
@@ -75,11 +87,7 @@ public class HttpApiCall {
         return result;
     }
 
-    private String stringOf(Object request) {
-        try {
-            return objectMapper.writeValueAsString(request);
-        } catch (JsonProcessingException e) {
-            return "";
-        }
+    private <S> S parseResponseBody(String responseBody, Class<S> clazz) {
+        return ResponseBodyParser.of(objectMapper).parse(responseBody, clazz);
     }
 }

@@ -1,7 +1,5 @@
 package im.juniq.apicall.http;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class Response {
 	private String gender;
 	private String name;

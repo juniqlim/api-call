@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 class HttpApiCallTest {
     @Test
     void 등록_조회_삭제() {
-        HttpApiCall httpApiCall = HttpApiCall.of(new RestTemplate(), new ObjectMapper());
+        HttpApiCall httpApiCall = RestTemplateHttpApiCall.of(new RestTemplate(), new ObjectMapper());
         Request request = Request.of("male", "juniq", "juniq@juniq.com", "active");
 
         httpApiCall.callApi(HttpMethod.POST, "https://gorest.co.in/public/v2/users", header(), request);
@@ -29,7 +29,7 @@ class HttpApiCallTest {
 
     @Test
     void 등록_조회_삭제_객체로_응답() {
-        HttpApiCall httpApiCall = HttpApiCall.of(new RestTemplate(), new ObjectMapper());
+        HttpApiCall httpApiCall = RestTemplateHttpApiCall.of(new RestTemplate(), new ObjectMapper());
         Request request = Request.of("male", "juniq", "juniq@juniq.com", "active");
 
         Response response = httpApiCall.callApi(HttpMethod.POST, "https://gorest.co.in/public/v2/users", header(),
@@ -42,12 +42,12 @@ class HttpApiCallTest {
     }
 
     void delete(int id) {
-        HttpApiCall httpApiCall = HttpApiCall.of(new RestTemplate(), new ObjectMapper());
+        HttpApiCall httpApiCall = RestTemplateHttpApiCall.of(new RestTemplate(), new ObjectMapper());
         httpApiCall.callApi(HttpMethod.DELETE, "https://gorest.co.in/public/v2/users/" + id, header(), null);
     }
 
     List<Response> get() {
-        HttpApiCall httpApiCall = HttpApiCall.of(new RestTemplate(), new ObjectMapper());
+        HttpApiCall httpApiCall = RestTemplateHttpApiCall.of(new RestTemplate(), new ObjectMapper());
         Response[] responses = httpApiCall.callApi("https://gorest.co.in/public/v2/users?name=juniq", header(),
             Response[].class);
         return Arrays.stream(responses).collect(Collectors.toList());

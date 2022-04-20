@@ -30,14 +30,20 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            groupId = 'com.github.juniqlim'
-            artifactId = 'api-call'
-            version = '0.0.4'
-
-            from components.java
+            artifact jar
         }
     }
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+    archiveFileName = 'api-call.jar'
 }

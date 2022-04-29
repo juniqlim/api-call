@@ -2,11 +2,30 @@ plugins {
     id 'org.springframework.boot' version '2.6.4'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'maven'
+    id 'signing'
 }
 
-group = 'im.juniq'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+group = 'io.github.juniqlim'
+archivesBaseName = 'api-call'
+version = '0.0.8'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+jar {
+    enabled = true
+    archiveClassifier = ''
+}
+
+bootJar {
+    enabled = false
+}
+
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:unchecked"
+    }
+}
 
 configurations {
     compileOnly {
@@ -28,4 +47,66 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+task javadocJar(type: Jar) {
+    archiveClassifier.set("javadoc")
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    archiveClassifier.set("sources")
+    from sourceSets.main.allSource
+}
+
+signing {
+    sign configurations.archives
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project { // 메이븐 중앙저장소에 표시될 정보들
+                name = 'api-call'
+                packaging 'jar'
+                description 'Api call with logging'
+                url 'https://github.com/juniqlim/api-call'
+
+                scm {
+                    connection 'https://github.com/juniqlim/api-call' // 변경
+                    developerConnection 'juniqlim@gmail.com' // 변경
+                    url 'https://github.com/juniqlim/api-call' // 변경
+                }
+
+                // 라이센스 설정
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'juniq'
+                        email 'juniqlim@gmail.com'
+                    }
+                }
+            }
+        }
+    }
 }

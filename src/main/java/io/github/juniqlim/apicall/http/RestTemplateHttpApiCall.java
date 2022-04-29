@@ -1,8 +1,8 @@
-package io.github.juniq.apicall.http;
+package io.github.juniqlim.apicall.http;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.juniq.apicall.http.logging.HttpLogging;
-import io.github.juniq.apicall.http.logging.HttpLogging.SystemOutPrintHttpLogging;
+import io.github.juniqlim.apicall.http.logging.HttpLogging;
+import io.github.juniqlim.apicall.http.logging.HttpLogging.SystemOutPrintHttpLogging;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;

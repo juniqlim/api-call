@@ -1,4 +1,4 @@
-package io.github.juniq.apicall.http;
+package io.github.juniqlim.apicall.http;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

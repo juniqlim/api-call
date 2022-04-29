@@ -1,4 +1,4 @@
-package io.github.juniq.apicall.http;
+package io.github.juniqlim.apicall.http;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

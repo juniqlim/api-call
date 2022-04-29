@@ -1,11 +1,14 @@
-package im.juniq.apicall.http.logging;
+package io.github.juniq.apicall.http.logging;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import im.juniq.apicall.http.HttpApiCallResult;
+import io.github.juniq.apicall.http.HttpApiCallResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * interface
+ */
 public interface HttpLogging {
     void infoLog(HttpApiCallResult httpApiCallResult);
     void errorLog(HttpApiCallResult httpApiCallResult);

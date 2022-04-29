@@ -1,9 +1,12 @@
-package im.juniq.apicall.http;
+package io.github.juniq.apicall.http;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 
+/**
+ * interface
+ */
 public class ResponseBodyParser {
     private final ObjectMapper objectMapper;
 

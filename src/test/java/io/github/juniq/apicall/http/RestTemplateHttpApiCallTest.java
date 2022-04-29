@@ -1,4 +1,4 @@
-package im.juniq.apicall.http;
+package io.github.juniq.apicall.http;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
@@ -38,7 +39,7 @@ class RestTemplateHttpApiCallTest {
         Response[] responses = httpApiCall.callApi(
             HttpRequest.of(HttpMethod.GET, "https://gorest.co.in/public/v2/users", Response[].class));
 
-        assertThat(responses).isNotNull();
+        Assertions.assertThat(responses).isNotNull();
     }
 
     @Test

@@ -1,4 +1,4 @@
-package im.juniq.apicall.http;
+package io.github.juniq.apicall.http;
 
 public class Response {
 	private String gender;

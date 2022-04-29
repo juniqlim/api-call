@@ -1,9 +1,8 @@
-package im.juniq.apicall.http;
+package io.github.juniq.apicall.http;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import im.juniq.apicall.http.logging.HttpLogging;
-import im.juniq.apicall.http.logging.HttpLogging.SystemOutPrintHttpLogging;
-import java.util.HashMap;
+import io.github.juniq.apicall.http.logging.HttpLogging;
+import io.github.juniq.apicall.http.logging.HttpLogging.SystemOutPrintHttpLogging;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -14,6 +13,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * interface
+ */
 @Slf4j
 public class RestTemplateHttpApiCall implements HttpApiCall {
     private final RestTemplate restTemplate;
@@ -82,6 +84,7 @@ public class RestTemplateHttpApiCall implements HttpApiCall {
         return result;
     }
 
+    @SuppressWarnings("unchecked")
     private <S> S parseResponseBody(String responseBody, Class<S> clazz) {
         if (clazz == String.class) {
             return (S) responseBody;

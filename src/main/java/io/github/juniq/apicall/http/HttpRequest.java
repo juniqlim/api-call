@@ -1,9 +1,12 @@
-package im.juniq.apicall.http;
+package io.github.juniq.apicall.http;
 
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpMethod;
 
+/**
+ * interface
+ */
 public class HttpRequest<Q, S> {
     private final HttpMethod httpMethod;
     private final String url;

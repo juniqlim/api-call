@@ -1,5 +1,8 @@
-package im.juniq.apicall.http;
+package io.github.juniq.apicall.http;
 
+/**
+ * interface
+ */
 public class HttpApiCallException extends RuntimeException {
     private final HttpResponse httpResponse;
 

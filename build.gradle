@@ -6,11 +6,19 @@ plugins {
     id 'signing'
 }
 
-group = 'im.juniq'
+group = 'io.github.juniqlim'
 archivesBaseName = 'api-call'
 version = '0.0.6'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+jar {
+    enabled = true
+}
+
+bootJar {
+    enabled = false
+}
 
 gradle.projectsEvaluated {
     tasks.withType(JavaCompile) {
@@ -19,6 +27,7 @@ gradle.projectsEvaluated {
 }
 
 configurations {
+    jar.archiveName = "${archivesBaseName}-${version}.jar"
     compileOnly {
         extendsFrom annotationProcessor
     }
@@ -41,12 +50,12 @@ tasks.named('test') {
 }
 
 task javadocJar(type: Jar) {
-    classifier = 'javadoc'
+    archiveClassifier.set("javadoc")
     from javadoc
 }
 
 task sourcesJar(type: Jar) {
-    classifier = 'sources'
+    archiveClassifier.set("sources")
     from sourceSets.main.allSource
 }
 

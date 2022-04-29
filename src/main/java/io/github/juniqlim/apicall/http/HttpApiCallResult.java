@@ -1,8 +1,11 @@
-package im.juniq.apicall.http;
+package io.github.juniqlim.apicall.http;
 
 import java.util.Map;
 import org.springframework.http.HttpMethod;
 
+/**
+ * interface
+ */
 public class HttpApiCallResult {
     private final HttpMethod httpMethod;
     private final String url;

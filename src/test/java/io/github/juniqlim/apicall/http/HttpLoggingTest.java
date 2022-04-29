@@ -1,9 +1,9 @@
-package im.juniq.apicall.http;
+package io.github.juniqlim.apicall.http;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 
-import im.juniq.apicall.http.logging.HttpLogging;
-import im.juniq.apicall.http.logging.HttpLogging.SystemOutPrintHttpLogging;
+import io.github.juniqlim.apicall.http.logging.HttpLogging;
+import io.github.juniqlim.apicall.http.logging.HttpLogging.SystemOutPrintHttpLogging;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Test;

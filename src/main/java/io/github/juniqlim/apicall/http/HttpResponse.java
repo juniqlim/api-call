@@ -1,7 +1,10 @@
-package im.juniq.apicall.http;
+package io.github.juniqlim.apicall.http;
 
 import org.springframework.http.HttpStatus;
 
+/**
+ * interface
+ */
 public class HttpResponse {
     private final HttpStatus httpStatus;
     private final String body;

@@ -14,6 +14,7 @@ targetCompatibility = 1.8
 
 jar {
     enabled = true
+    archiveClassifier = ''
 }
 
 bootJar {
@@ -27,7 +28,6 @@ gradle.projectsEvaluated {
 }
 
 configurations {
-    jar.archiveName = "${archivesBaseName}-${version}.jar"
     compileOnly {
         extendsFrom annotationProcessor
     }
@@ -81,7 +81,7 @@ uploadArchives {
             }
 
             pom.project { // 메이븐 중앙저장소에 표시될 정보들
-                name 'api-call'
+                name = 'api-call'
                 packaging 'jar'
                 description 'Api call with logging'
                 url 'https://github.com/juniqlim/api-call'
@@ -103,7 +103,6 @@ uploadArchives {
                 developers {
                     developer {
                         id 'juniq'
-                        name 'juniq'
                         email 'juniqlim@gmail.com'
                     }
                 }

@@ -17,12 +17,30 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class WebClientHttpApiCall implements HttpApiCall {
     private final WebClient webClient;
-    private final ObjectMapper objectMapper;
+    private final ResponseBodyParser responseBodyParser;
     private final HttpLogging httpLogging;
+
+    public WebClientHttpApiCall(WebClient webClient) {
+        this(webClient, new SystemOutPrintHttpLogging());
+    }
+
+    public WebClientHttpApiCall(WebClient webClient, HttpLogging httpLogging) {
+        this(webClient, new OnlyStringResponseBodyParser(), httpLogging);
+    }
+
+    public WebClientHttpApiCall(WebClient webClient, ObjectMapper objectMapper) {
+        this(webClient, objectMapper, new SystemOutPrintHttpLogging());
+    }
 
     public WebClientHttpApiCall(WebClient webClient, ObjectMapper objectMapper, HttpLogging httpLogging) {
         this.webClient = webClient;
-        this.objectMapper = objectMapper;
+        this.responseBodyParser = new ObjectMapperResponseBodyParser(objectMapper);
+        this.httpLogging = httpLogging;
+    }
+
+    public WebClientHttpApiCall(WebClient webClient, ResponseBodyParser responseBodyParser, HttpLogging httpLogging) {
+        this.webClient = webClient;
+        this.responseBodyParser = responseBodyParser;
         this.httpLogging = httpLogging;
     }
 
@@ -105,6 +123,6 @@ public class WebClientHttpApiCall implements HttpApiCall {
         if (clazz == String.class) {
             return (S) responseBody;
         }
-        return ResponseBodyParser.of(objectMapper).parse(responseBody, clazz);
+        return responseBodyParser.parse(responseBody, clazz);
     }
 }

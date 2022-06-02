@@ -19,12 +19,30 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class RestTemplateHttpApiCall implements HttpApiCall {
     private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
+    private final ResponseBodyParser responseBodyParser;
     private final HttpLogging httpLogging;
 
-    private RestTemplateHttpApiCall(RestTemplate restTemplate, ObjectMapper objectMapper, HttpLogging httpLogging) {
+    public RestTemplateHttpApiCall(RestTemplate restTemplate) {
+        this(restTemplate, new SystemOutPrintHttpLogging());
+    }
+
+    public RestTemplateHttpApiCall(RestTemplate restTemplate, HttpLogging httpLogging) {
+        this(restTemplate, new OnlyStringResponseBodyParser(), httpLogging);
+    }
+
+    public RestTemplateHttpApiCall(RestTemplate restTemplate, ObjectMapper objectMapper) {
+        this(restTemplate, objectMapper, new SystemOutPrintHttpLogging());
+    }
+
+    public RestTemplateHttpApiCall(RestTemplate restTemplate, ObjectMapper objectMapper, HttpLogging httpLogging) {
         this.restTemplate = restTemplate;
-        this.objectMapper = objectMapper;
+        this.responseBodyParser = new ObjectMapperResponseBodyParser(objectMapper);
+        this.httpLogging = httpLogging;
+    }
+
+    public RestTemplateHttpApiCall(RestTemplate restTemplate, ResponseBodyParser responseBodyParser, HttpLogging httpLogging) {
+        this.restTemplate = restTemplate;
+        this.responseBodyParser = responseBodyParser;
         this.httpLogging = httpLogging;
     }
 
@@ -83,11 +101,10 @@ public class RestTemplateHttpApiCall implements HttpApiCall {
         return result;
     }
 
-    @SuppressWarnings("unchecked")
     private <S> S parseResponseBody(String responseBody, Class<S> clazz) {
         if (clazz == String.class) {
             return (S) responseBody;
         }
-        return ResponseBodyParser.of(objectMapper).parse(responseBody, clazz);
+        return responseBodyParser.parse(responseBody, clazz);
     }
 }

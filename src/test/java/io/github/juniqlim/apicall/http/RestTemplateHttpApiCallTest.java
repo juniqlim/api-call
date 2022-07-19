@@ -20,7 +20,7 @@ class RestTemplateHttpApiCallTest {
 
     @BeforeAll
     static void setup() {
-        httpApiCall = RestTemplateHttpApiCall.of(new RestTemplate(), new ObjectMapper());
+        httpApiCall = new RestTemplateHttpApiCall(new RestTemplate(), new ObjectMapper());
     }
 
     @Test

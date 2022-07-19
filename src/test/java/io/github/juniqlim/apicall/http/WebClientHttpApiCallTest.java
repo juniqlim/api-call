@@ -20,7 +20,7 @@ class WebClientHttpApiCallTest {
 
     @BeforeAll
     static void setup() {
-        httpApiCall = WebClientHttpApiCall.of(WebClient.builder().build(), new ObjectMapper());
+        httpApiCall = new WebClientHttpApiCall(WebClient.builder().build(), new ObjectMapper());
     }
 
     @Test

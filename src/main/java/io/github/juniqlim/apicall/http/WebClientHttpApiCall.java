@@ -20,6 +20,10 @@ public class WebClientHttpApiCall implements HttpApiCall {
     private final ResponseBodyParser responseBodyParser;
     private final HttpLogging httpLogging;
 
+    public WebClientHttpApiCall() {
+        this(WebClient.builder().build(), new SystemOutPrintHttpLogging());
+    }
+
     public WebClientHttpApiCall(WebClient webClient) {
         this(webClient, new SystemOutPrintHttpLogging());
     }
@@ -42,15 +46,6 @@ public class WebClientHttpApiCall implements HttpApiCall {
         this.webClient = webClient;
         this.responseBodyParser = responseBodyParser;
         this.httpLogging = httpLogging;
-    }
-
-    public static WebClientHttpApiCall of(WebClient webClient, ObjectMapper objectMapper) {
-        return new WebClientHttpApiCall(webClient, objectMapper, new SystemOutPrintHttpLogging());
-    }
-
-    public static WebClientHttpApiCall of(WebClient webClient, ObjectMapper objectMapper,
-        HttpLogging httpLogging) {
-        return new WebClientHttpApiCall(webClient, objectMapper, httpLogging);
     }
 
     @Override

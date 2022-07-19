@@ -22,6 +22,8 @@ public class RestTemplateHttpApiCall implements HttpApiCall {
     private final ResponseBodyParser responseBodyParser;
     private final HttpLogging httpLogging;
 
+    public RestTemplateHttpApiCall() { this(new RestTemplate(), new SystemOutPrintHttpLogging()); }
+
     public RestTemplateHttpApiCall(RestTemplate restTemplate) {
         this(restTemplate, new SystemOutPrintHttpLogging());
     }
@@ -44,15 +46,6 @@ public class RestTemplateHttpApiCall implements HttpApiCall {
         this.restTemplate = restTemplate;
         this.responseBodyParser = responseBodyParser;
         this.httpLogging = httpLogging;
-    }
-
-    public static RestTemplateHttpApiCall of(RestTemplate restTemplate, ObjectMapper objectMapper) {
-        return new RestTemplateHttpApiCall(restTemplate, objectMapper, new SystemOutPrintHttpLogging());
-    }
-
-    public static RestTemplateHttpApiCall of(RestTemplate restTemplate, ObjectMapper objectMapper,
-        HttpLogging httpLogging) {
-        return new RestTemplateHttpApiCall(restTemplate, objectMapper, httpLogging);
     }
 
     @Override

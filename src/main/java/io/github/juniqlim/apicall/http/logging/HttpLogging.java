@@ -20,14 +20,14 @@ public interface HttpLogging {
 
         @Override
         public void infoLog(HttpApiCallResult httpApiCallResult) {
-            log.info("status:{},method:{},url:{},header:{},req:{},res:{}", httpApiCallResult.response().httpStatus(),
+            log.info("status:{},method:{},url:{},header:{},request:{},response:{}", httpApiCallResult.response().httpStatus(),
                 httpApiCallResult.httpMethod().name(), httpApiCallResult.url(), httpApiCallResult.header().toString(),
                 stringOf(httpApiCallResult.request()), httpApiCallResult.response().body());
         }
 
         @Override
         public void errorLog(HttpApiCallResult httpApiCallResult) {
-            log.error("status:{},method:{},url:{},header:{},req:{},res:{}", httpApiCallResult.response().httpStatus(),
+            log.error("status:{},method:{},url:{},header:{},request:{},response:{}", httpApiCallResult.response().httpStatus(),
                 httpApiCallResult.httpMethod().name(), httpApiCallResult.url(), httpApiCallResult.header().toString(),
                 stringOf(httpApiCallResult.request()), httpApiCallResult.response().body());
         }

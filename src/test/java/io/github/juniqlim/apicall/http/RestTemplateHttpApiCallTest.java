@@ -37,7 +37,7 @@ class RestTemplateHttpApiCallTest {
     @Test
     void 요청없이_API호출() {
         Response[] responses = httpApiCall.callApi(
-            HttpRequest.of(HttpMethod.GET, "https://gorest.co.in/public/v2/users", Response[].class));
+            new HttpRequest<>(HttpMethod.GET, "https://gorest.co.in/public/v2/users", Response[].class));
 
         Assertions.assertThat(responses).isNotNull();
     }
@@ -47,7 +47,8 @@ class RestTemplateHttpApiCallTest {
         Request request = Request.of("male", "juniq", "juniq@juniq.com", "active");
 
         Response createdUser = httpApiCall.callApi(
-            HttpRequest.of(HttpMethod.POST, "https://gorest.co.in/public/v2/users", header(), request, Response.class));
+            new HttpRequest<>(HttpMethod.POST, "https://gorest.co.in/public/v2/users", header(), request,
+                Response.class));
 
         assertThat(createdUser.getId()).isGreaterThan(0);
 
@@ -57,7 +58,7 @@ class RestTemplateHttpApiCallTest {
 
     List<Response> findUsers() {
         Response[] responses = httpApiCall.callApi(
-            HttpRequest.of(HttpMethod.GET, "https://gorest.co.in/public/v2/users?name=juniq", header(),
+            new HttpRequest<>(HttpMethod.GET, "https://gorest.co.in/public/v2/users?name=juniq", header(),
                 Response[].class));
 
         return Arrays.stream(responses).collect(Collectors.toList());

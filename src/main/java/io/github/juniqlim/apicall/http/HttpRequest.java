@@ -1,6 +1,5 @@
 package io.github.juniqlim.apicall.http;
 
-import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpMethod;
 
@@ -14,31 +13,22 @@ public class HttpRequest<Q, S> {
     private final Q request;
     private final Class<S> responseType;
 
-    private HttpRequest(HttpMethod httpMethod, String url, Map<String, String> header, Q request,
+    public HttpRequest(HttpMethod httpMethod, String url, Class<S> responseType) {
+        this(httpMethod, url, null, null, responseType);
+    }
+
+    public HttpRequest(HttpMethod httpMethod, String url, Map<String, String> header,
+        Class<S> responseType) {
+        this(httpMethod, url, header, null, responseType);
+    }
+
+    public HttpRequest(HttpMethod httpMethod, String url, Map<String, String> header, Q request,
         Class<S> responseType) {
         this.httpMethod = httpMethod;
         this.url = url;
         this.header = header;
         this.request = request;
         this.responseType = responseType;
-    }
-
-    public static <Q, S> HttpRequest<Q, S> of(HttpMethod httpMethod, String url, Map<String, String> header, Q request,
-        Class<S> responseType) {
-        return new HttpRequest<>(httpMethod, url, header, request, responseType);
-    }
-
-    public static <Q, S> HttpRequest<Q, S> of(HttpMethod httpMethod, String url, Map<String, String> header,
-        Class<S> responseType) {
-        return new HttpRequest<>(httpMethod, url, header, null, responseType);
-    }
-
-    public static <Q, S> HttpRequest<Q, S> of(HttpMethod httpMethod, String url, Q request, Class<S> responseType) {
-        return new HttpRequest<>(httpMethod, url, new HashMap<>(), request, responseType);
-    }
-
-    public static <Q, S> HttpRequest<Q, S> of(HttpMethod httpMethod, String url, Class<S> responseType) {
-        return new HttpRequest<>(httpMethod, url, new HashMap<>(), null, responseType);
     }
 
     public HttpMethod httpMethod() {

@@ -1,28 +1,27 @@
 package io.github.juniqlim.apicall.http;
 
 import java.util.Map;
-import org.springframework.http.HttpMethod;
 
 /**
  * interface
  */
 public class HttpRequest<Q, S> {
-    private final HttpMethod httpMethod;
+    private final Method httpMethod;
     private final String url;
     private final Map<String, String> header;
     private final Q request;
     private final Class<S> responseType;
 
-    public HttpRequest(HttpMethod httpMethod, String url, Class<S> responseType) {
+    public HttpRequest(Method httpMethod, String url, Class<S> responseType) {
         this(httpMethod, url, null, null, responseType);
     }
 
-    public HttpRequest(HttpMethod httpMethod, String url, Map<String, String> header,
+    public HttpRequest(Method httpMethod, String url, Map<String, String> header,
         Class<S> responseType) {
         this(httpMethod, url, header, null, responseType);
     }
 
-    public HttpRequest(HttpMethod httpMethod, String url, Map<String, String> header, Q request,
+    public HttpRequest(Method httpMethod, String url, Map<String, String> header, Q request,
         Class<S> responseType) {
         this.httpMethod = httpMethod;
         this.url = url;
@@ -31,7 +30,7 @@ public class HttpRequest<Q, S> {
         this.responseType = responseType;
     }
 
-    public HttpMethod httpMethod() {
+    public Method httpMethod() {
         return httpMethod;
     }
 

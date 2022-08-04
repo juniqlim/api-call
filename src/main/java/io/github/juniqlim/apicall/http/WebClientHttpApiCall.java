@@ -50,12 +50,12 @@ public class WebClientHttpApiCall implements HttpApiCall {
 
     @Override
     public <Q, S> S callApi(HttpRequest<Q, S> request) {
-        return run(request.httpMethod(), request.url(), request.header(), request.request(), request.responseType());
+        return run(request.httpMethod().httpMethod(), request.url(), request.header(), request.request(), request.responseType());
     }
 
     @Override
     public <Q> void callApi(HttpRequestWithoutResponse<Q> response) {
-        runWithoutResponse(response.httpMethod(), response.url(), response.header(), response.request());
+        runWithoutResponse(response.httpMethod().httpMethod(), response.url(), response.header(), response.request());
     }
 
     private <Q, S> S run(HttpMethod httpMethod, String url, Map<String, String> header, Q request, Class<S> clazz) {

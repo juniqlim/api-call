@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.RestTemplate;
 
@@ -27,7 +26,7 @@ class RestTemplateHttpApiCallTest {
     void 요청과_응답없이_API호출() {
         try {
             httpApiCall.callApi(
-                HttpRequestWithoutResponse.of(HttpMethod.DELETE, "https://gorest.co.in/public/v2/users/2030000",
+                new HttpRequestWithoutResponse(Method.DELETE, "https://gorest.co.in/public/v2/users/2030000",
                     header()));
         } catch (HttpApiCallException e) {
             assertThat(e.httpResponse().httpStatus()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -37,7 +36,7 @@ class RestTemplateHttpApiCallTest {
     @Test
     void 요청없이_API호출() {
         Response[] responses = httpApiCall.callApi(
-            new HttpRequest<>(HttpMethod.GET, "https://gorest.co.in/public/v2/users", Response[].class));
+            new HttpRequest<>(Method.GET, "https://gorest.co.in/public/v2/users", Response[].class));
 
         Assertions.assertThat(responses).isNotNull();
     }
@@ -47,7 +46,7 @@ class RestTemplateHttpApiCallTest {
         Request request = Request.of("male", "juniq", "juniq@juniq.com", "active");
 
         Response createdUser = httpApiCall.callApi(
-            new HttpRequest<>(HttpMethod.POST, "https://gorest.co.in/public/v2/users", header(), request,
+            new HttpRequest<>(Method.POST, "https://gorest.co.in/public/v2/users", header(), request,
                 Response.class));
 
         assertThat(createdUser.getId()).isGreaterThan(0);
@@ -58,7 +57,7 @@ class RestTemplateHttpApiCallTest {
 
     List<Response> findUsers() {
         Response[] responses = httpApiCall.callApi(
-            new HttpRequest<>(HttpMethod.GET, "https://gorest.co.in/public/v2/users?name=juniq", header(),
+            new HttpRequest<>(Method.GET, "https://gorest.co.in/public/v2/users?name=juniq", header(),
                 Response[].class));
 
         return Arrays.stream(responses).collect(Collectors.toList());
@@ -66,7 +65,7 @@ class RestTemplateHttpApiCallTest {
 
     void deleteUserForRegressionTest(int id) {
         httpApiCall.callApi(
-            HttpRequestWithoutResponse.of(HttpMethod.DELETE, "https://gorest.co.in/public/v2/users/" + id, header()));
+            new HttpRequestWithoutResponse<>(Method.DELETE, "https://gorest.co.in/public/v2/users/" + id, header()));
     }
 
     private Map<String, String> header() {

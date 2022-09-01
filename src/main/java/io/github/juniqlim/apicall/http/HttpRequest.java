@@ -1,5 +1,6 @@
 package io.github.juniqlim.apicall.http;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -13,7 +14,7 @@ public class HttpRequest<Q, S> {
     private final Class<S> responseType;
 
     public HttpRequest(Method httpMethod, String url, Class<S> responseType) {
-        this(httpMethod, url, null, null, responseType);
+        this(httpMethod, url, new HashMap<>(), null, responseType);
     }
 
     public HttpRequest(Method httpMethod, String url, Map<String, String> header,

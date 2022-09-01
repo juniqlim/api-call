@@ -9,7 +9,7 @@ public class HttpResponse {
     private final HttpStatus httpStatus;
     private final String body;
 
-    private HttpResponse(HttpStatus httpStatus, String body) {
+    public HttpResponse(HttpStatus httpStatus, String body) {
         this.httpStatus = httpStatus;
         this.body = body;
     }

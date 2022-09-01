@@ -23,6 +23,12 @@ class WebClientHttpApiCallTest {
     }
 
     @Test
+    void test() {
+        httpApiCall.callApi(
+            new HttpRequest<>(Method.GET, "https://gorest.co.in/public/v2/users?name=juniq", String.class));
+    }
+
+    @Test
     void 요청과_응답없이_API호출() {
         try {
             httpApiCall.callApi(

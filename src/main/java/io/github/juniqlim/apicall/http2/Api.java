@@ -13,16 +13,16 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-public interface HttpApi<S> {
+public interface Api<S> {
     void call();
     S response(Class<S> responseType) throws JsonProcessingException;
 
-    class DefaultHttpApi<S> implements HttpApi<S> {
+    class Http<S> implements Api<S> {
         private final HttpRequest request;
         private final WebClient webClient;
         private final HttpLogging httpLogging;
 
-        public DefaultHttpApi(HttpRequest request, WebClient webClient, HttpLogging httpLogging) {
+        public Http(HttpRequest request, WebClient webClient, HttpLogging httpLogging) {
             this.request = request;
             this.webClient = webClient;
             this.httpLogging = httpLogging;
@@ -79,16 +79,16 @@ public interface HttpApi<S> {
     }
 
     class Smart<S> {
-        public DefaultHttpApi<S> to(HttpRequest request) {
+        public Api<S> to(HttpRequest request) {
             return to(request, WebClient.builder().build());
         }
 
-        public DefaultHttpApi<S> to(HttpRequest request, WebClient webClient) {
-            return new DefaultHttpApi<>(request, webClient, new SystemOutPrintHttpLogging());
+        public Api<S> to(HttpRequest request, WebClient webClient) {
+            return new Http<>(request, webClient, new SystemOutPrintHttpLogging());
         }
 
-        public DefaultHttpApi<S> to(HttpRequest request, HttpLogging httpLogging) {
-            return new DefaultHttpApi<>(request, WebClient.builder().build(), httpLogging);
+        public Api<S> to(HttpRequest request, HttpLogging httpLogging) {
+            return new Http<>(request, WebClient.builder().build(), httpLogging);
         }
     }
 }

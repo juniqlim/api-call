@@ -34,6 +34,10 @@ public interface HttpApi<S> {
 
         public S response(Class<S> responseType) throws JsonProcessingException {
             ResponseEntity<String> response = callServer();
+
+            if (responseType == String.class) {
+                return (S) response.getBody();
+            }
             return new DeserializedObject<>(response.getBody(), responseType).object();
         }
 
@@ -56,7 +60,7 @@ public interface HttpApi<S> {
             return webClient.method(request.httpMethod().httpMethod()).uri(request.url())
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(httpHeaders -> httpHeaders.setAll(request.header()))
-                .body(BodyInserters.fromValue(request))
+                .body(BodyInserters.fromValue(request.request()))
                 .retrieve()
                 .onStatus(HttpStatus::isError, clientResponse -> Mono.empty())
                 .toEntity(String.class)
@@ -74,16 +78,16 @@ public interface HttpApi<S> {
         }
     }
 
-    class Smart {
-        public DefaultHttpApi to(HttpRequest request) {
+    class Smart<S> {
+        public DefaultHttpApi<S> to(HttpRequest request) {
             return to(request, WebClient.builder().build());
         }
 
-        public DefaultHttpApi to(HttpRequest request, WebClient webClient) {
+        public DefaultHttpApi<S> to(HttpRequest request, WebClient webClient) {
             return new DefaultHttpApi<>(request, webClient, new SystemOutPrintHttpLogging());
         }
 
-        public DefaultHttpApi to(HttpRequest request, HttpLogging httpLogging) {
+        public DefaultHttpApi<S> to(HttpRequest request, HttpLogging httpLogging) {
             return new DefaultHttpApi<>(request, WebClient.builder().build(), httpLogging);
         }
     }
